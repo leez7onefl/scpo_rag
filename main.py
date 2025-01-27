@@ -158,7 +158,7 @@ def initialize_pinecone(api_key, index_name):
 def is_pinecone_index_empty(index):
     """Check if a Pinecone index is empty."""
     response = index.describe_index_stats()
-    return response #response['namespaces']['ns1']['vector_count'] == 0
+    return True #response['namespaces']['ns1']['vector_count'] == 0
 
 def store_vectors_in_pinecone(index, vectors):
     """Store vectors in the Pinecone index."""
