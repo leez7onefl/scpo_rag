@@ -176,7 +176,7 @@ def query_pinecone_index(index, query_vector, top_k=3):
     return response['matches']
 
 # Load environment variables
-load_environment_variables([['env', '.env'], ['secrets', 'keys.env']])
+load_environment_variables(['env', '.env'])
 
 env_variables = {
     'openai_api_key': os.getenv('OPENAI_API_KEY'),
