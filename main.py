@@ -9,7 +9,7 @@ from github import Github
 from pinecone import Pinecone
 
 # Constants
-PAGE_TITLE = "Leonard's Assistant"
+PAGE_TITLE = "SCPO"
 PAGE_ICON = "🤖"
 LAYOUT = "wide"
 
@@ -82,7 +82,7 @@ def refine_response(text, prompt, model="gpt-4o", max_length=1024):
 
 def extract_text_from_pdf(file_content):
     """Extract text from a PDF file."""
-    images = convert_from_bytes(file_content)
+    images = convert_from_bytes(file_content, poppler_path=r'./myenv/poppler-24.08.0/Library/bin')
     pytesseract.pytesseract.tesseract_cmd = r"./myenv/Tesseract-OCR/tesseract.exe"
     text = "".join(pytesseract.image_to_string(image) for image in images)
     return text
@@ -158,7 +158,7 @@ def initialize_pinecone(api_key, index_name):
 def is_pinecone_index_empty(index):
     """Check if a Pinecone index is empty."""
     response = index.describe_index_stats()
-    return True #response['namespaces']['ns1']['vector_count'] == 0
+    return response['namespaces']['ns1']['vector_count'] == 0
 
 def store_vectors_in_pinecone(index, vectors):
     """Store vectors in the Pinecone index."""
@@ -176,7 +176,7 @@ def query_pinecone_index(index, query_vector, top_k=3):
     return response['matches']
 
 # Load environment variables
-load_environment_variables([['env', '.env']]) #load_environment_variables([['env', '.env'], ['secrets', 'keys.env']]) if local install
+load_environment_variables([['env', '.env'], ['secrets', 'keys.env']])
 
 env_variables = {
     'openai_api_key': os.getenv('OPENAI_API_KEY'),
@@ -223,8 +223,7 @@ st.markdown(
 
 # Sidebar Configuration
 with st.sidebar:
-    st.title("Leonard's AI profile 📱")
-    st.image("https://media.licdn.com/dms/image/v2/D4E03AQHVJQphgpBZsA/profile-displayphoto-shrink_800_800/B4EZRQ1Vo0HsAg-/0/1736522947560?e=1743033600&v=beta&t=aOvVBtCVATAAlVg9nRWN5heYeRPXoeAMIA0w-ZdRlsY")
+    st.title("SCPO TITRE")
 
     with st.expander("Parameters"):
         selected_model = st.selectbox('Model', ['gpt-4o', 'o1-mini', 'gpt-3.5-turbo'], key='selected_model')
@@ -233,11 +232,11 @@ with st.sidebar:
         freq_penalty = st.slider('Frequency Penalty -/+:', min_value=-1.99, max_value=1.99, value=0.0, step=0.01)
         max_length = st.slider('Max Length', min_value=256, max_value=8192, value=4224, step=2)
 
-    st.button('Clear Chat History', on_click=lambda: st.session_state.update({'messages': [{"role": "assistant", "content": "Ask me anything regarding Léonard Gonzalez! 🔮"}]}))
+    st.button('Clear Chat History', on_click=lambda: st.session_state.update({'messages': [{"role": "assistant", "content": "DIALOGUER AVEC SCPO"}]}))
 
 # Maintain chat history
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Ask me anything regarding Léonard Gonzalez! 🔮"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "DIALOGUER AVEC SCPO"}]
 
 # Display the chat history
 for message in st.session_state['messages']:
